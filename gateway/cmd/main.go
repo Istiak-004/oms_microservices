@@ -4,14 +4,17 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	cnf "github.com/istiak-004/gateway/config"
 	"github.com/istiak-004/gateway/internals/routers"
+	//_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
-	port := ":8080" // Replace with your desired port number
+	config := cnf.LoadEnv()
+
 	engine := routers.NewRouter(gin.Default())
 	engine.SetupRoutes()
 
-	fmt.Printf("Starting server at port %v", port)
-	engine.Run(port) // Start the server on port 8080
+	fmt.Printf("Starting server at port %v", config.PortAddr)
+	engine.Run(config.PortAddr) // Start the server on port 8080
 }

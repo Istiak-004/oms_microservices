@@ -2,22 +2,25 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
+	pb "github.com/istiak-004/common/api"
 	"github.com/istiak-004/gateway/internals/controllers"
 )
 
 type Router struct {
-	router *gin.Engine
+	router     *gin.Engine
+	grpcClient pb.OrderServiceClient
 }
 
-func NewRouter(engine *gin.Engine) *Router {
+func NewRouter(engine *gin.Engine, grpcClient pb.OrderServiceClient) *Router {
 	return &Router{
-		router: engine,
+		router:     engine,
+		grpcClient: grpcClient,
 	}
 }
 
 func (r *Router) SetupRoutes() {
 	router := r.router
-	c := controllers.NewController()
+	c := controllers.NewController(r.grpcClient)
 	orders := router.Group("/orders")
 	{
 		orders.POST("/orders", c.CreateOrder)

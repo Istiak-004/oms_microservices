@@ -1,7 +1,15 @@
 package controllers
 
-type Controller struct{}
+import (
+	pb "github.com/istiak-004/common/api"
+)
 
-func NewController() *Controller {
-	return &Controller{}
+type Controller struct {
+	grpcClient pb.OrderServiceClient
+}
+
+func NewController(grpcClient pb.OrderServiceClient) *Controller {
+	return &Controller{
+		grpcClient: grpcClient,
+	}
 }

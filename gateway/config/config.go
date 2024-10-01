@@ -17,3 +17,18 @@ func LoadEnv() *config.Config {
 	config := config.NewConfig()
 	return config
 }
+
+// type Config struct {
+// 	GrpcConnection *grpc.ClientConn `config:"grpc"`
+// }
+
+// func NewConfig(grpcTarget string) *Config {
+// 	conn, err := grpc.NewClient(grpcTarget)
+// 	if err != nil {
+// 		fmt.Printf("Failed to connect to gRPC server: %v", err)
+// 		return &Config{}
+// 	}
+// 	return &Config{
+// 		GrpcConnection: conn,
+// 	}
+// }

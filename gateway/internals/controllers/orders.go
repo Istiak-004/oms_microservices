@@ -10,8 +10,7 @@ import (
 )
 
 type Order struct {
-	CustomerId string               `json:"customerId"`
-	Items      []*ItemsWithQuantity `json:"items"`
+	Items []*ItemsWithQuantity `json:"items"`
 }
 
 type ItemsWithQuantity struct {
@@ -20,6 +19,8 @@ type ItemsWithQuantity struct {
 }
 
 func (c *Controller) CreateOrder(ctx *gin.Context) {
+
+	customerId := ctx.Param("customerId")
 	// Bind the request body JSON to the Order struct
 	var order Order
 	if err := ctx.ShouldBindJSON(&order); err != nil {
@@ -38,7 +39,7 @@ func (c *Controller) CreateOrder(ctx *gin.Context) {
 
 	// Construct the gRPC request
 	orderReq := pb.CreateOrderRequest{
-		CustomerId: order.CustomerId,
+		CustomerId: customerId,
 		Items:      pbItems, // Use the converted items
 	}
 

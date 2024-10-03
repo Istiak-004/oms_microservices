@@ -23,7 +23,7 @@ func (r *Router) SetupRoutes() {
 	c := controllers.NewController(r.grpcClient)
 	orders := router.Group("/orders")
 	{
-		orders.POST("/order/customer/:customerId", c.CreateOrder)
+		orders.POST("/customer/:customerId", c.CreateOrder)
 	}
 }
 

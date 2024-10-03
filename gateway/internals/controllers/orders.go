@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -10,7 +11,7 @@ import (
 )
 
 type Order struct {
-	Items []*ItemsWithQuantity `json:"items"`
+	Items []ItemsWithQuantity `json:"items"`
 }
 
 type ItemsWithQuantity struct {
@@ -19,14 +20,17 @@ type ItemsWithQuantity struct {
 }
 
 func (c *Controller) CreateOrder(ctx *gin.Context) {
-
 	customerId := ctx.Param("customerId")
+	fmt.Printf("customer id : %s", customerId)
+
 	// Bind the request body JSON to the Order struct
 	var order Order
 	if err := ctx.ShouldBindJSON(&order); err != nil {
+		fmt.Printf("Error binding request body: %v\n", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	fmt.Printf("Order: %+v\n", order)
 
 	// Manually convert your Go struct to the protobuf struct
 	var pbItems []*pb.ItemsWithQuantity
@@ -49,6 +53,7 @@ func (c *Controller) CreateOrder(ctx *gin.Context) {
 
 	resp, err := c.grpcClient.CreateOrder(grpcCtx, &orderReq)
 	if err != nil {
+		fmt.Println("Here is the error:::::::::::::::::>", err)
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

@@ -14,8 +14,10 @@ import (
 
 func main() {
 	config := cnf.LoadEnv()
-
+	fmt.Println("Config file path is: +++++++++++++>>", config)
 	grpcConnection, err := grpc.NewClient(config.GrpcAddress, grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	fmt.Println("grpc connection :##################", grpcConnection)
 
 	if err != nil {
 		fmt.Printf("Failed to connect to gRPC server: %v", err)
@@ -27,6 +29,10 @@ func main() {
 	// create  a grpc client connection
 
 	orderServiceClient := pb.NewOrderServiceClient(grpcConnection)
+
+	fmt.Println("------------------------------------")
+	fmt.Println(orderServiceClient)
+	fmt.Println("------------------------------------")
 
 	engine := routers.NewRouter(gin.Default(), orderServiceClient)
 	engine.SetupRoutes()
